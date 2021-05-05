@@ -6,7 +6,7 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
+  TableHead, TablePagination,
   TableRow,
   Typography
 } from "@material-ui/core";
@@ -17,12 +17,15 @@ import ClearIcon from "@material-ui/icons/Clear";
 import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarIcon from '@material-ui/icons/Star';
+import React from "react";
 
 type LaunchesListTableProps = {
   data: LaunchItem[];
   page: number;
   total: number;
   rowsPerPage: number;
+  onChangePage: (pageNumber: number) => void;
+  onChangeRowsPerPage: (rows: number) => void;
 }
 
 const useStyles = makeStyles(() =>
@@ -35,6 +38,13 @@ const useStyles = makeStyles(() =>
 
 const LaunchesListTable = (props: LaunchesListTableProps) => {
   const classes = useStyles();
+
+  const handleChangePage = (event: unknown, newPage: number) => {
+    props.onChangePage(newPage);
+  };
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    props.onChangeRowsPerPage(parseInt(event.target.value));
+  };
 
   return (
     <div>
@@ -85,6 +95,16 @@ const LaunchesListTable = (props: LaunchesListTableProps) => {
           </TableBody>
         </Table>
       </TableContainer>
+      <TablePagination
+        component="div"
+        count={props.total}
+        page={props.page}
+        rowsPerPage={props.rowsPerPage}
+        rowsPerPageOptions={[1, 5, 10, 15]}
+
+        onChangePage={handleChangePage}
+        onChangeRowsPerPage={handleChangeRowsPerPage}
+      />
     </div>
   )
 };

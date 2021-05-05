@@ -1,5 +1,6 @@
 import LaunchesListTable from "./LaunchesListTable";
 import {LaunchItem} from "../../types/LaunchItem";
+import {useState} from "react";
 
 const data: LaunchItem[] = [
   {
@@ -19,13 +20,27 @@ const data: LaunchItem[] = [
 ];
 
 export function LaunchesList() {
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(1);
+
+  const handleChangePage = (newPage: number) => {
+    setPage(newPage);
+  }
+
+  const handleChangeRowsPerPage = (rows: number) => {
+    setRowsPerPage(rows);
+    setPage(0);
+  }
+
   return (
     <div>
       <LaunchesListTable
         data={data}
         total={2}
-        page={0}
-        rowsPerPage={5}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        onChangePage={handleChangePage}
+        onChangeRowsPerPage={handleChangeRowsPerPage}
       />
 
     </div>

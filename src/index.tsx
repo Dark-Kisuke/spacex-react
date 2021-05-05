@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {createMuiTheme, CssBaseline, ThemeProvider} from "@material-ui/core";
+import {unstable_createMuiStrictModeTheme as createMuiTheme, CssBaseline, ThemeProvider} from "@material-ui/core";
 import {lightBlue, red} from "@material-ui/core/colors";
 
 const theme = createMuiTheme({
@@ -13,7 +13,6 @@ const theme = createMuiTheme({
     type: 'dark'
   },
 });
-
 
 ReactDOM.render(
   <React.StrictMode>
