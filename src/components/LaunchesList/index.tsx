@@ -1,27 +1,15 @@
 import LaunchesListTable from "./LaunchesListTable";
 import {LaunchItem} from "../../types/LaunchItem";
-import {useState} from "react";
-
-const data: LaunchItem[] = [
-  {
-    id: "1",
-    name: "First",
-    launchDate: "2021-05-01T12:00:00.000Z",
-    upcoming: false,
-    success: true,
-    iconColor: "#e80c0c"
-  },
-  {
-    id: "2",
-    name: "Second",
-    launchDate: "2021-06-01T12:00:00.000Z",
-    upcoming: true
-  }
-];
+import {useEffect, useState} from "react";
+import {useLaunchService} from "../../services/launch-service";
+import {take} from "rxjs/operators";
 
 export function LaunchesList() {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [data, setData] = useState([] as LaunchItem[]);
+  const [total, setTotal] = useState(0);
+  const launchService = useLaunchService();
 
   const handleChangePage = (newPage: number) => {
     setPage(newPage);
@@ -32,17 +20,27 @@ export function LaunchesList() {
     setPage(0);
   }
 
-  return (
-    <div>
-      <LaunchesListTable
-        data={data}
-        total={2}
-        page={page}
-        rowsPerPage={rowsPerPage}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
-      />
+  function getLaunches() {
+    launchService.getLaunches(page + 1, rowsPerPage, null)
+      .pipe(take(1))
+      .subscribe(response => {
+        setData(response.data);
+        setTotal(response.total);
+      });
+  }
 
-    </div>
+  useEffect(() => {
+    getLaunches()
+  }, [page, rowsPerPage]);
+
+  return (
+    <LaunchesListTable
+      data={data}
+      total={total}
+      page={page}
+      rowsPerPage={rowsPerPage}
+      onChangePage={handleChangePage}
+      onChangeRowsPerPage={handleChangeRowsPerPage}
+    />
   )
 }
