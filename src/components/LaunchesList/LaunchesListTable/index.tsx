@@ -42,7 +42,7 @@ const useStyles = makeStyles(() =>
   }),
 );
 
-const LaunchesListTable = (props: LaunchesListTableProps) => {
+export default function LaunchesListTable(props: LaunchesListTableProps) {
   const classes = useStyles();
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -121,5 +121,3 @@ const LaunchesListTable = (props: LaunchesListTableProps) => {
     </>
   )
 };
-
-export default LaunchesListTable;

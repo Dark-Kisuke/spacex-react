@@ -4,7 +4,7 @@ import {useLaunchService} from "../../services/launch-service";
 import {LaunchItem} from "../../types/LaunchItem";
 import LaunchesListTable from "./LaunchesListTable";
 
-export function LaunchesList() {
+export default function LaunchesList() {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);

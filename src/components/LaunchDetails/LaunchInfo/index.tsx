@@ -42,7 +42,7 @@ function PatchImage({link}: { link?: string }) {
   )
 }
 
-export function LaunchInfo({launchData}: LaunchInfoProps) {
+export default function LaunchInfo({launchData}: LaunchInfoProps) {
   return (
     <Card variant="outlined">
       <CardContent>

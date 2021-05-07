@@ -5,9 +5,9 @@ import {Link} from "react-router-dom";
 import {take, tap} from "rxjs/operators";
 import {useLaunchService} from "../../services/launch-service";
 import {LaunchItem} from "../../types/LaunchItem";
-import {LaunchInfo} from "./LaunchInfo/LaunchInfo";
+import LaunchInfo from "./LaunchInfo";
 
-export function LaunchDetails({launchId}: { launchId: string }) {
+export default function LaunchDetails({launchId}: { launchId: string }) {
   const [loading, setLoading] = useState(false);
   const [launchData, setLaunchData] = useState<LaunchItem | null>(null);
   const launchService = useLaunchService();
