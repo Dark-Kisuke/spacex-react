@@ -4,11 +4,15 @@ import {from, Observable} from "rxjs";
 import {map, take} from "rxjs/operators";
 import {LaunchData} from "../types/launch-data";
 
+export interface LaunchesList {
+  data: LaunchData[],
+  total: number
+}
+
 export class LaunchService {
   private readonly api = "https://api.spacexdata.com/v4/launches";
 
-  public getLaunches(page: number, limit: number, name: string | null):
-    Observable<{ data: LaunchData[], total: number }> {
+  public getLaunches(page: number, limit: number, name: string | null): Observable<LaunchesList> {
 
     const body = {
       options: {page, limit, sort: {flight_number: "desc"}},
