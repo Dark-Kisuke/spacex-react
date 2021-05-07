@@ -1,25 +1,28 @@
 import {
   createStyles,
+  LinearProgress,
   Link,
   makeStyles,
   Table,
   TableBody,
   TableCell,
   TableContainer,
-  TableHead, TablePagination,
+  TableHead,
+  TablePagination,
   TableRow,
   Typography
 } from "@material-ui/core";
+import ClearIcon from "@material-ui/icons/Clear";
+import DoneIcon from "@material-ui/icons/Done";
+import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
+import StarIcon from '@material-ui/icons/Star';
+import StarBorderIcon from '@material-ui/icons/StarBorder';
+import React from "react";
 import {Link as RouterLink} from "react-router-dom";
 import {LaunchItem} from "../../../types/LaunchItem";
-import DoneIcon from "@material-ui/icons/Done";
-import ClearIcon from "@material-ui/icons/Clear";
-import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
-import StarBorderIcon from '@material-ui/icons/StarBorder';
-import StarIcon from '@material-ui/icons/Star';
-import React from "react";
 
 type LaunchesListTableProps = {
+  loading: boolean
   data: LaunchItem[];
   page: number;
   total: number;
@@ -30,6 +33,9 @@ type LaunchesListTableProps = {
 
 const useStyles = makeStyles(() =>
   createStyles({
+    loadingIndicator: {
+      padding: 0
+    },
     table: {
       minWidth: 500
     }
@@ -47,7 +53,7 @@ const LaunchesListTable = (props: LaunchesListTableProps) => {
   };
 
   return (
-    <div>
+    <>
       <TableContainer>
         <Table className={classes.table} aria-label="Launches table">
           <TableHead>
@@ -60,6 +66,13 @@ const LaunchesListTable = (props: LaunchesListTableProps) => {
             </TableRow>
           </TableHead>
           <TableBody>
+            {props.loading &&
+            <TableRow>
+              <TableCell colSpan={5} className={classes.loadingIndicator}>
+                <LinearProgress/>
+              </TableCell>
+            </TableRow>
+            }
             {props.data.map((value, index) => {
               return <TableRow hover key={'launch-' + index}>
                 <TableCell>
@@ -105,7 +118,7 @@ const LaunchesListTable = (props: LaunchesListTableProps) => {
         onChangePage={handleChangePage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
       />
-    </div>
+    </>
   )
 };
 
