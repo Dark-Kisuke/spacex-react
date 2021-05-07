@@ -1,8 +1,8 @@
-import LaunchesListTable from "./LaunchesListTable";
-import {LaunchItem} from "../../types/LaunchItem";
-import {useEffect, useState} from "react";
-import {useLaunchService} from "../../services/launch-service";
+import React, {useEffect, useState} from "react";
 import {take} from "rxjs/operators";
+import {useLaunchService} from "../../services/launch-service";
+import {LaunchItem} from "../../types/LaunchItem";
+import LaunchesListTable from "./LaunchesListTable";
 
 export function LaunchesList() {
   const [page, setPage] = useState(0);
@@ -20,18 +20,18 @@ export function LaunchesList() {
     setPage(0);
   }
 
-  function getLaunches() {
-    launchService.getLaunches(page + 1, rowsPerPage, null)
-      .pipe(take(1))
-      .subscribe(response => {
-        setData(response.data);
-        setTotal(response.total);
-      });
-  }
-
   useEffect(() => {
-    getLaunches()
-  }, [page, rowsPerPage]);
+    function getLaunches() {
+      launchService.getLaunches(page + 1, rowsPerPage, null)
+        .pipe(take(1))
+        .subscribe(response => {
+          setData(response.data);
+          setTotal(response.total);
+        });
+    }
+
+    getLaunches();
+  }, [page, rowsPerPage, launchService]);
 
   return (
     <LaunchesListTable

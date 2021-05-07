@@ -5,4 +5,5 @@ export interface LaunchItem {
     upcoming: boolean;
     success?: boolean;
     iconColor?: string;
+    patchImage?: string;
 }
