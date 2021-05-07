@@ -1,10 +1,10 @@
-import axios from "axios";
-import {createContext, useContext} from "react";
-import {from} from "rxjs";
-import {map} from "rxjs/operators";
+import axios from 'axios';
+import {createContext, useContext} from 'react';
+import {from} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 export class RocketService {
-  private readonly api = "https://api.spacexdata.com/v4/rockets";
+  private readonly api = 'https://api.spacexdata.com/v4/rockets';
 
   public getRocket(id: string) {
     return from(axios.get(`${this.api}/${id}`))

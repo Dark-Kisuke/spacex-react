@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from "react";
-import {take} from "rxjs/operators";
-import {useLaunchService} from "../../services/launch-service";
-import {LaunchData} from "../../types/launch-data";
-import LaunchesListTable from "./LaunchesListTable";
+import React, {useEffect, useState} from 'react';
+import {take} from 'rxjs/operators';
+import {useLaunchService} from '../../services/launch-service';
+import {LaunchData} from '../../types/launch-data';
+import LaunchesListTable from './LaunchesListTable';
 
 export default function LaunchesList() {
   const [loading, setLoading] = useState(false);

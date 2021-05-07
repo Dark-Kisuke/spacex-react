@@ -1,14 +1,14 @@
-import {Grid, IconButton, LinearProgress} from "@material-ui/core";
+import {Grid, IconButton, LinearProgress} from '@material-ui/core';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import React, {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
-import {mergeMap, take, tap} from "rxjs/operators";
-import {useLaunchService} from "../../services/launch-service";
-import {useRocketService} from "../../services/rocket-service";
-import {LaunchData} from "../../types/launch-data";
-import {RocketData} from "../../types/rocket-data";
-import LaunchInfo from "./LaunchInfo";
-import RocketInfo from "./RocketInfo";
+import React, {useEffect, useState} from 'react';
+import {Link} from 'react-router-dom';
+import {mergeMap, take, tap} from 'rxjs/operators';
+import {useLaunchService} from '../../services/launch-service';
+import {useRocketService} from '../../services/rocket-service';
+import {LaunchData} from '../../types/launch-data';
+import {RocketData} from '../../types/rocket-data';
+import LaunchInfo from './LaunchInfo';
+import RocketInfo from './RocketInfo';
 
 export default function LaunchDetails({launchId}: { launchId: string }) {
   const [loading, setLoading] = useState(false);

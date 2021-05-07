@@ -1,6 +1,6 @@
-import {Card, CardContent, Typography} from "@material-ui/core";
-import React from "react";
-import {RocketData} from "../../../types/rocket-data";
+import {Card, CardContent, Typography} from '@material-ui/core';
+import React from 'react';
+import {RocketData} from '../../../types/rocket-data';
 
 interface RocketInfoProps {
   rocketData: RocketData

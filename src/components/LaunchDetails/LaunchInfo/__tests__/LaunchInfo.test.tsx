@@ -1,16 +1,15 @@
-import {CardMedia} from "@material-ui/core";
-import DoneIcon from "@material-ui/icons/Done";
+import {CardMedia} from '@material-ui/core';
 import {mount} from 'enzyme';
-import React from "react";
-import {LaunchData} from "../../../../types/launch-data";
-import LaunchInfo from "../index";
+import React from 'react';
+import {LaunchData} from '../../../../types/launch-data';
+import LaunchInfo from '../index';
 
 const launchDataMock: LaunchData = {
-  id: "1234",
-  name: "Launch 1",
-  rocket: "Rocket 1",
+  id: '1234',
+  name: 'Launch 1',
+  rocket: 'Rocket 1',
   upcoming: true,
-  launchDate: "2020-01-01",
+  launchDate: '2020-01-01',
   success: undefined,
   iconColor: '#ffffff'
 }

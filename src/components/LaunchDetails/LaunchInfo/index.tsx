@@ -1,10 +1,10 @@
-import {Card, CardContent, CardMedia, createStyles, makeStyles, Typography} from "@material-ui/core";
-import ClearIcon from "@material-ui/icons/Clear";
-import DoneIcon from "@material-ui/icons/Done";
-import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
-import StarBorderIcon from "@material-ui/icons/StarBorder";
-import React from "react";
-import {LaunchData} from "../../../types/launch-data";
+import {Card, CardContent, CardMedia, createStyles, makeStyles, Typography} from '@material-ui/core';
+import ClearIcon from '@material-ui/icons/Clear';
+import DoneIcon from '@material-ui/icons/Done';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import StarBorderIcon from '@material-ui/icons/StarBorder';
+import React from 'react';
+import {LaunchData} from '../../../types/launch-data';
 
 interface LaunchInfoProps {
   launchData: LaunchData
@@ -19,7 +19,7 @@ const useStyles = makeStyles(() =>
   }),
 );
 
-function PatchImage({link}: { link?: string }) {
+const PatchImage = ({link}: { link?: string }) => {
   const classes = useStyles();
 
   return (
@@ -39,7 +39,7 @@ function PatchImage({link}: { link?: string }) {
   )
 }
 
-export default function LaunchInfo({launchData}: LaunchInfoProps) {
+const LaunchInfo = ({launchData}: LaunchInfoProps) => {
   return (
     <Card variant="outlined">
       <CardContent>
@@ -75,3 +75,4 @@ export default function LaunchInfo({launchData}: LaunchInfoProps) {
   )
 }
 
+export default LaunchInfo;

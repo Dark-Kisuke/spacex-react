@@ -1,10 +1,10 @@
-import {Container} from "@material-ui/core";
+import {Container} from '@material-ui/core';
 import React from 'react';
-import {RouteComponentProps} from "react-router";
+import {RouteComponentProps} from 'react-router';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import './App.css';
-import LaunchDetails from "./components/LaunchDetails";
-import LaunchesList from "./components/LaunchesList";
+import LaunchDetails from './components/LaunchDetails';
+import LaunchesList from './components/LaunchesList';
 
 function App() {
   return (
@@ -15,7 +15,8 @@ function App() {
                  exact
                  render={(props: RouteComponentProps<any>) =>
                    <LaunchDetails launchId={props.match.params.id}/>
-                 }>
+                 }
+          >
           </Route>
           <Route path="/">
             <LaunchesList/>

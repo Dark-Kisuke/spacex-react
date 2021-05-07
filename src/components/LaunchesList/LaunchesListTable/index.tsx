@@ -11,15 +11,15 @@ import {
   TablePagination,
   TableRow,
   Typography
-} from "@material-ui/core";
-import ClearIcon from "@material-ui/icons/Clear";
-import DoneIcon from "@material-ui/icons/Done";
-import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
+} from '@material-ui/core';
+import ClearIcon from '@material-ui/icons/Clear';
+import DoneIcon from '@material-ui/icons/Done';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import StarIcon from '@material-ui/icons/Star';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
-import React from "react";
-import {Link as RouterLink} from "react-router-dom";
-import {LaunchData} from "../../../types/launch-data";
+import React from 'react';
+import {Link as RouterLink} from 'react-router-dom';
+import {LaunchData} from '../../../types/launch-data';
 
 type LaunchesListTableProps = {
   loading: boolean
@@ -120,4 +120,4 @@ export default function LaunchesListTable(props: LaunchesListTableProps) {
       />
     </>
   )
-};
+}

@@ -1,7 +1,7 @@
-import {mount} from "enzyme";
-import React from "react";
-import {RocketData} from "../../../../types/rocket-data";
-import RocketInfo from "../index";
+import {mount} from 'enzyme';
+import React from 'react';
+import {RocketData} from '../../../../types/rocket-data';
+import RocketInfo from '../index';
 
 const rocketDataMock: RocketData = {
   name: 'Rocket',
@@ -12,5 +12,5 @@ const rocketDataMock: RocketData = {
 }
 
 it('mount without crashing', () => {
-  mount(<RocketInfo rocketData={rocketDataMock} />);
+  mount(<RocketInfo rocketData={rocketDataMock}/>);
 });

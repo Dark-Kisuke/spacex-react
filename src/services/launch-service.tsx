@@ -1,8 +1,8 @@
-import axios from "axios";
+import axios from 'axios';
 import {createContext, useContext} from 'react';
-import {from, Observable} from "rxjs";
-import {map, take} from "rxjs/operators";
-import {LaunchData} from "../types/launch-data";
+import {from, Observable} from 'rxjs';
+import {map, take} from 'rxjs/operators';
+import {LaunchData} from '../types/launch-data';
 
 export interface LaunchesList {
   data: LaunchData[],
@@ -10,12 +10,12 @@ export interface LaunchesList {
 }
 
 export class LaunchService {
-  private readonly api = "https://api.spacexdata.com/v4/launches";
+  private readonly api = 'https://api.spacexdata.com/v4/launches';
 
   public getLaunches(page: number, limit: number, name: string | null): Observable<LaunchesList> {
 
     const body = {
-      options: {page, limit, sort: {flight_number: "desc"}},
+      options: {page, limit, sort: {flight_number: 'desc'}},
       query: {}
     };
 

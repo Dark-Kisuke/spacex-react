@@ -1,10 +1,10 @@
+import {CssBaseline, ThemeProvider, unstable_createMuiStrictModeTheme as createMuiTheme} from '@material-ui/core';
+import {lightBlue, red} from '@material-ui/core/colors';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
+import './index.css';
 import reportWebVitals from './reportWebVitals';
-import {unstable_createMuiStrictModeTheme as createMuiTheme, CssBaseline, ThemeProvider} from "@material-ui/core";
-import {lightBlue, red} from "@material-ui/core/colors";
 
 const theme = createMuiTheme({
   palette: {
