@@ -1,4 +1,4 @@
-import {Card, CardContent, CardMedia, createStyles, makeStyles, Theme, Typography} from "@material-ui/core";
+import {Card, CardContent, CardMedia, createStyles, makeStyles, Typography} from "@material-ui/core";
 import ClearIcon from "@material-ui/icons/Clear";
 import DoneIcon from "@material-ui/icons/Done";
 import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
@@ -10,11 +10,8 @@ interface LaunchInfoProps {
   launchData: LaunchData
 }
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
-    cardTitle: {
-      fontSize: 14,
-    },
     patch: {
       width: 150,
       height: 150
@@ -26,7 +23,7 @@ function PatchImage({link}: { link?: string }) {
   const classes = useStyles();
 
   return (
-    <div>
+    <>
       <Typography gutterBottom variant="h6" component="h3">
         Patch image
       </Typography>
@@ -38,7 +35,7 @@ function PatchImage({link}: { link?: string }) {
         />
         : <span>N/A</span>
       }
-    </div>
+    </>
   )
 }
 
@@ -57,7 +54,7 @@ export default function LaunchInfo({launchData}: LaunchInfoProps) {
           <dt>Launch Date</dt>
           <dd>{launchData.launchDate}</dd>
           <dt>Upcoming</dt>
-          <dd>
+          <dd className="upcoming-status">
             {launchData.upcoming
               ? <DoneIcon/>
               : <ClearIcon/>
