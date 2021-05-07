@@ -19,11 +19,11 @@ import StarIcon from '@material-ui/icons/Star';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import React from "react";
 import {Link as RouterLink} from "react-router-dom";
-import {LaunchItem} from "../../../types/LaunchItem";
+import {LaunchData} from "../../../types/launch-data";
 
 type LaunchesListTableProps = {
   loading: boolean
-  data: LaunchItem[];
+  data: LaunchData[];
   page: number;
   total: number;
   rowsPerPage: number;

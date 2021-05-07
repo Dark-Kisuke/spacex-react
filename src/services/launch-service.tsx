@@ -1,14 +1,14 @@
+import axios from "axios";
 import {createContext, useContext} from 'react';
 import {from, Observable} from "rxjs";
-import axios from "axios";
 import {map, take} from "rxjs/operators";
-import {LaunchItem} from "../types/LaunchItem";
+import {LaunchData} from "../types/launch-data";
 
 export class LaunchService {
   private readonly api = "https://api.spacexdata.com/v4/launches";
 
   public getLaunches(page: number, limit: number, name: string | null):
-    Observable<{ data: LaunchItem[], total: number }> {
+    Observable<{ data: LaunchData[], total: number }> {
 
     const body = {
       options: {page, limit, sort: {flight_number: "desc"}},
@@ -24,34 +24,34 @@ export class LaunchService {
       }
     }
 
-    return from(
-      axios.post(`${this.api}/query`, body)
-    ).pipe(
-      map(response => response.data),
-      map(response => ({
-          data: response.docs.map((value: any) => this.mapLaunch(value)),
-          total: response.totalDocs,
-        })
-      )
-    );
+    return from(axios.post(`${this.api}/query`, body))
+      .pipe(
+        map(response => response.data),
+        map(response => ({
+            data: response.docs.map((value: any) => this.mapLaunch(value)),
+            total: response.totalDocs,
+          })
+        )
+      );
   }
 
   public getLaunch(id: string) {
-    return from(
-      axios.get(`${this.api}/${id}`)
-    ).pipe(
-      take(1),
-      map(response => response.data)
-    )
+    return from(axios.get(`${this.api}/${id}`))
+      .pipe(
+        take(1),
+        map(response => this.mapLaunch(response.data))
+      )
   }
 
-  private mapLaunch(obj: any): LaunchItem {
+  private mapLaunch(object: any): LaunchData {
     return {
-      id: obj.id,
-      name: obj.name,
-      upcoming: obj.upcoming,
-      launchDate: obj.date_utc,
-      success: obj.success
+      id: object.id,
+      name: object.name,
+      upcoming: object.upcoming,
+      launchDate: object.date_utc,
+      success: object.success,
+      patchImage: object.links?.patch?.small,
+      rocket: object.rocket
     }
   }
 }

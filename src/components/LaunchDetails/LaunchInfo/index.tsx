@@ -4,10 +4,10 @@ import DoneIcon from "@material-ui/icons/Done";
 import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
 import React from "react";
-import {LaunchItem} from "../../../types/LaunchItem";
+import {LaunchData} from "../../../types/launch-data";
 
 interface LaunchInfoProps {
-  launchData: LaunchItem
+  launchData: LaunchData
 }
 
 const useStyles = makeStyles((theme: Theme) =>

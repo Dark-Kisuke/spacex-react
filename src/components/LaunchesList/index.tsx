@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from "react";
 import {take} from "rxjs/operators";
 import {useLaunchService} from "../../services/launch-service";
-import {LaunchItem} from "../../types/LaunchItem";
+import {LaunchData} from "../../types/launch-data";
 import LaunchesListTable from "./LaunchesListTable";
 
 export default function LaunchesList() {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [data, setData] = useState([] as LaunchItem[]);
+  const [data, setData] = useState([] as LaunchData[]);
   const [total, setTotal] = useState(0);
   const launchService = useLaunchService();
 
