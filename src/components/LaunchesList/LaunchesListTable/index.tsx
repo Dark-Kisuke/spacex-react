@@ -29,6 +29,8 @@ type LaunchesListTableProps = {
   rowsPerPage: number;
   onChangePage: (pageNumber: number) => void;
   onChangeRowsPerPage: (rows: number) => void;
+  onFavouriteLaunch: (id: string) => void;
+  onRemoveFavouriteLaunch: (id: string) => void;
 }
 
 const useStyles = makeStyles(() =>
@@ -42,7 +44,7 @@ const useStyles = makeStyles(() =>
   }),
 );
 
-export default function LaunchesListTable(props: LaunchesListTableProps) {
+const LaunchesListTable = (props: LaunchesListTableProps) => {
   const classes = useStyles();
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -77,8 +79,9 @@ export default function LaunchesListTable(props: LaunchesListTableProps) {
               return <TableRow hover key={'launch-' + index}>
                 <TableCell>
                   {value.iconColor ?
-                    <StarIcon style={{color: value.iconColor}}/> :
-                    <StarBorderIcon/>
+                    <StarIcon style={{color: value.iconColor}}
+                              onClick={() => props.onRemoveFavouriteLaunch(value.id)}/> :
+                    <StarBorderIcon onClick={() => props.onFavouriteLaunch(value.id)}/>
                   }
                 </TableCell>
                 <TableCell>
@@ -121,3 +124,5 @@ export default function LaunchesListTable(props: LaunchesListTableProps) {
     </>
   )
 }
+
+export default LaunchesListTable;
