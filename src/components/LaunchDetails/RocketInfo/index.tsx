@@ -6,7 +6,7 @@ interface RocketInfoProps {
   rocketData: RocketData
 }
 
-export default function RocketInfo({rocketData}: RocketInfoProps) {
+const RocketInfo = ({rocketData}: RocketInfoProps) => {
   return (
     <Card variant="outlined">
       <CardContent>
@@ -29,3 +29,5 @@ export default function RocketInfo({rocketData}: RocketInfoProps) {
     </Card>
   )
 }
+
+export default RocketInfo;

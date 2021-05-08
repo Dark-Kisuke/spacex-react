@@ -6,6 +6,10 @@ import {map} from 'rxjs/operators';
 export class RocketService {
   private readonly api = 'https://api.spacexdata.com/v4/rockets';
 
+  /**
+   * Fetches the single rocket data
+   * @param id The rocket id
+   */
   public getRocket(id: string) {
     return from(axios.get(`${this.api}/${id}`))
       .pipe(
