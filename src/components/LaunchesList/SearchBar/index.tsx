@@ -9,7 +9,7 @@ interface SearchBarProps {
 const SearchBar = ({onChange}: SearchBarProps) => {
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
-    onChange(event.target.value);
+    onChange(event.target.value.trim());
   }
 
   return (

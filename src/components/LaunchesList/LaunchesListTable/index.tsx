@@ -21,7 +21,7 @@ import React from 'react';
 import {Link as RouterLink} from 'react-router-dom';
 import {LaunchData} from '../../../types/launch-data';
 
-type LaunchesListTableProps = {
+interface LaunchesListTableProps {
   loading: boolean
   data: LaunchData[];
   page: number;
@@ -41,7 +41,7 @@ const useStyles = makeStyles(() =>
     table: {
       minWidth: 500
     }
-  }),
+  })
 );
 
 const LaunchesListTable = (props: LaunchesListTableProps) => {
@@ -50,67 +50,70 @@ const LaunchesListTable = (props: LaunchesListTableProps) => {
   const handleChangePage = (event: unknown, newPage: number) => {
     props.onChangePage(newPage);
   };
+
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     props.onChangeRowsPerPage(parseInt(event.target.value));
   };
 
+  let loadingIndicator;
+  if (props.loading) {
+    loadingIndicator = (
+      <TableRow>
+        <TableCell colSpan={5} className={classes.loadingIndicator}>
+          <LinearProgress/>
+        </TableCell>
+      </TableRow>
+    );
+  }
+
   return (
-    <>
-      <TableContainer>
-        <Table className={classes.table} aria-label="Launches table">
-          <TableHead>
-            <TableRow>
-              <TableCell/>
-              <TableCell>Name</TableCell>
-              <TableCell>Launch Date</TableCell>
-              <TableCell>Upcoming</TableCell>
-              <TableCell>Successful</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {props.loading &&
-            <TableRow>
-              <TableCell colSpan={5} className={classes.loadingIndicator}>
-                <LinearProgress/>
+    <TableContainer>
+      <Table className={classes.table} aria-label="Launches table">
+        <TableHead>
+          <TableRow>
+            <TableCell/>
+            <TableCell>Name</TableCell>
+            <TableCell>Launch Date</TableCell>
+            <TableCell>Upcoming</TableCell>
+            <TableCell>Successful</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {loadingIndicator}
+          {props.data.map((value, index) => (
+            <TableRow hover key={'launch-' + index}>
+              <TableCell>
+                {value.iconColor
+                  ? <StarIcon style={{color: value.iconColor}} onClick={() => props.onRemoveFavouriteLaunch(value.id)}/>
+                  : <StarBorderIcon onClick={() => props.onFavouriteLaunch(value.id)}/>
+                }
               </TableCell>
-            </TableRow>
-            }
-            {props.data.map((value, index) => {
-              return <TableRow hover key={'launch-' + index}>
-                <TableCell>
-                  {value.iconColor ?
-                    <StarIcon style={{color: value.iconColor}}
-                              onClick={() => props.onRemoveFavouriteLaunch(value.id)}/> :
-                    <StarBorderIcon onClick={() => props.onFavouriteLaunch(value.id)}/>
-                  }
-                </TableCell>
-                <TableCell>
-                  <Typography>
-                    <Link component={RouterLink} to={'/launch/' + value.id}>{value.name}</Link>
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  {value.launchDate}
-                </TableCell>
-                <TableCell>
-                  {value.upcoming
+              <TableCell>
+                <Typography>
+                  <Link component={RouterLink} to={'/launch/' + value.id}>{value.name}</Link>
+                </Typography>
+              </TableCell>
+              <TableCell>
+                {value.launchDate}
+              </TableCell>
+              <TableCell>
+                {value.upcoming
+                  ? <DoneIcon/>
+                  : <ClearIcon/>
+                }
+              </TableCell>
+              <TableCell>
+                {value.success == null
+                  ? <HelpOutlineIcon/>
+                  : value.success
                     ? <DoneIcon/>
                     : <ClearIcon/>
-                  }
-                </TableCell>
-                <TableCell>
-                  {value.success == null
-                    ? <HelpOutlineIcon/>
-                    : value.success
-                      ? <DoneIcon/>
-                      : <ClearIcon/>
-                  }
-                </TableCell>
-              </TableRow>
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer>
+                }
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
       <TablePagination
         component="div"
         count={props.total}
@@ -121,8 +124,8 @@ const LaunchesListTable = (props: LaunchesListTableProps) => {
         onChangePage={handleChangePage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
       />
-    </>
-  )
-}
+    </TableContainer>
+  );
+};
 
 export default LaunchesListTable;
