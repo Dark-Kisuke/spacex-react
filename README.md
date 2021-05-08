@@ -3,11 +3,24 @@ An example app created with React that allows to browse SpaceX launches.
 
 Demo: [Click~](https://dark-kisuke.github.io/spacex-react/)
 
+## Functionality
+* Browse launches list and allows to search the launch by its name (or some fragment)
+* Browse launch details
+* Possibility to mark the launch as a favourite (by clicking the star icon) and generating random color to it.
+  The favourite flag is persisted in `localStorage`.
+
 ## Development
 ### Requirements
-
 * npm 7+
 * node 16+
+
+### Stack
+* TypeScript
+* React
+* React Router
+* Material UI
+* axios
+* RxJS
 
 ## Available Scripts
 
