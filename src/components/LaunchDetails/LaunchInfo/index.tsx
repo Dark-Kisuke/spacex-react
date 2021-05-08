@@ -2,12 +2,15 @@ import {Card, CardContent, CardMedia, createStyles, makeStyles, Typography} from
 import ClearIcon from '@material-ui/icons/Clear';
 import DoneIcon from '@material-ui/icons/Done';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import StarIcon from '@material-ui/icons/Star';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import React from 'react';
 import {LaunchData} from '../../../types/launch-data';
 
 interface LaunchInfoProps {
-  launchData: LaunchData
+  launchData: LaunchData;
+  onFavouriteLaunch: () => void;
+  onRemoveFavouriteLaunch: () => void;
 }
 
 const useStyles = makeStyles(() =>
@@ -39,13 +42,17 @@ const PatchImage = ({link}: { link?: string }) => {
   )
 }
 
-const LaunchInfo = ({launchData}: LaunchInfoProps) => {
+const LaunchInfo = ({launchData, onFavouriteLaunch, onRemoveFavouriteLaunch}: LaunchInfoProps) => {
   return (
     <Card variant="outlined">
       <CardContent>
 
         <Typography gutterBottom variant="h5" component="h2">
-          <StarBorderIcon/> {launchData.name}
+          {launchData.iconColor ?
+            <StarIcon style={{color: launchData.iconColor}}
+                      onClick={() => onRemoveFavouriteLaunch()}/> :
+            <StarBorderIcon onClick={() => onFavouriteLaunch()}/>
+          } {launchData.name}
         </Typography>
 
         <dl>

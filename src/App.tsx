@@ -16,8 +16,7 @@ function App() {
                  render={(props: RouteComponentProps<any>) =>
                    <LaunchDetails launchId={props.match.params.id}/>
                  }
-          >
-          </Route>
+          />
           <Route path="/">
             <LaunchesList/>
           </Route>

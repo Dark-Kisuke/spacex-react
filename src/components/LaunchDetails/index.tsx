@@ -10,12 +10,29 @@ import {RocketData} from '../../types/rocket-data';
 import LaunchInfo from './LaunchInfo';
 import RocketInfo from './RocketInfo';
 
-export default function LaunchDetails({launchId}: { launchId: string }) {
+const LaunchDetails = ({launchId}: { launchId: string }) => {
   const [loading, setLoading] = useState(false);
   const [launchData, setLaunchData] = useState<LaunchData | null>(null);
   const [rocketData, setRocketData] = useState<RocketData | null>(null);
   const launchService = useLaunchService();
   const rocketService = useRocketService();
+
+  const handleFavouriteLaunch = () => {
+    const itemColor = launchService.favourite(launchId);
+    updateLaunchColor(itemColor!);
+  }
+
+  const handleRemoveFavouriteLaunch = () => {
+    launchService.removeFavourite(launchId);
+    updateLaunchColor();
+  }
+
+  const updateLaunchColor = (color?: string) => {
+    const updatedLaunchData = Object.assign({}, launchData);
+    updatedLaunchData.iconColor = color;
+
+    setLaunchData(updatedLaunchData);
+  }
 
   useEffect(() => {
     function getLaunchData() {
@@ -30,7 +47,7 @@ export default function LaunchDetails({launchId}: { launchId: string }) {
     }
 
     getLaunchData();
-  }, [launchId, launchService, rocketService]);
+  }, [launchId]);
 
   return (
     <>
@@ -41,7 +58,9 @@ export default function LaunchDetails({launchId}: { launchId: string }) {
       {launchData && rocketData &&
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
-          <LaunchInfo launchData={launchData}/>
+          <LaunchInfo launchData={launchData}
+                      onFavouriteLaunch={handleFavouriteLaunch}
+                      onRemoveFavouriteLaunch={handleRemoveFavouriteLaunch}/>
         </Grid>
         <Grid item xs={12} sm={6}>
           <RocketInfo rocketData={rocketData}/>
@@ -51,3 +70,5 @@ export default function LaunchDetails({launchId}: { launchId: string }) {
     </>
   )
 }
+
+export default LaunchDetails;
