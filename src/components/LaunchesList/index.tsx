@@ -95,12 +95,15 @@ const LaunchesList = () => {
   useEffect(() => {
     const sub = searchQuery$
       .pipe(debounceTime(500))
-      .subscribe(setQuery);
+      .subscribe((value) => {
+        setQuery(value);
+        setPage(0);
+      });
 
     return () => {
       sub.unsubscribe();
     }
-  })
+  }, [])
 
   return (
     <div className={classes.root}>

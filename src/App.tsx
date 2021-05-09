@@ -8,7 +8,7 @@ import LaunchesList from './components/LaunchesList';
 
 function App() {
   return (
-    <Router>
+    <Router basename={`${process.env.PUBLIC_URL}/`}>
       <Container>
         <Switch>
           <Route path="/launch/:id"
