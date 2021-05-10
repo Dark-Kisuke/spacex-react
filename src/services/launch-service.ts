@@ -2,7 +2,7 @@ import axios from 'axios';
 import randomColor from 'randomcolor';
 import {createContext, useContext} from 'react';
 import {from, Observable} from 'rxjs';
-import {map, take} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {LaunchData} from '../types/launch-data';
 
 export interface LaunchesList {
@@ -31,7 +31,7 @@ export class LaunchService {
           $regex: `${name}`,
           $options: 'i'
         }
-      }
+      };
     }
 
     return from(axios.post(`${this.api}/query`, body))
@@ -39,7 +39,7 @@ export class LaunchService {
         map(response => response.data),
         map(response => ({
             data: response.docs.map((value: any) => this.mapLaunch(value)),
-            total: response.totalDocs,
+            total: response.totalDocs
           })
         )
       );
@@ -52,9 +52,8 @@ export class LaunchService {
   public getLaunch(id: string) {
     return from(axios.get(`${this.api}/${id}`))
       .pipe(
-        take(1),
         map(response => this.mapLaunch(response.data))
-      )
+      );
   }
 
   /**
@@ -64,14 +63,14 @@ export class LaunchService {
    */
   public favourite(id: string): string | null {
     const allFavourites = this.getAllFavouriteLaunched();
-    if (!allFavourites[id]) {
-      allFavourites[id] = randomColor({luminosity: 'light'});
-      this.storeFavourites(allFavourites);
-
-      return allFavourites[id];
+    if (allFavourites[id]) {
+      return null;
     }
 
-    return null;
+    allFavourites[id] = randomColor({luminosity: 'light'});
+    this.storeFavourites(allFavourites);
+
+    return allFavourites[id];
   }
 
   /**
@@ -113,7 +112,7 @@ export class LaunchService {
       patchImage: object.links?.patch?.small,
       rocket: object.rocket,
       iconColor: this.getFavouriteColor(object.id)
-    }
+    };
   }
 }
 
@@ -121,4 +120,4 @@ const LaunchServiceContext = createContext<LaunchService>(new LaunchService());
 
 export const useLaunchService = () => {
   return useContext(LaunchServiceContext);
-}
+};

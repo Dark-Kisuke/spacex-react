@@ -39,10 +39,10 @@ const LaunchDetails = ({launchId}: { launchId: string }) => {
       setLoading(true);
       launchService.getLaunch(launchId)
         .pipe(
-          take(1),
           tap(launch => setLaunchData(launch)),
           mergeMap(launch => rocketService.getRocket(launch.rocket)),
-          tap(rocket => setRocketData(rocket))
+          tap(rocket => setRocketData(rocket)),
+          take(1)
         ).subscribe(() => setLoading(false));
     }
 

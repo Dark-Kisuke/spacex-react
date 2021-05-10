@@ -1,5 +1,6 @@
 # SpaceX launches overview
 An example app created with React that allows to browse SpaceX launches.
+SpaceX API: [Click~](https://github.com/r-spacex/SpaceX-API)
 
 Demo: [Click~](https://dark-kisuke.github.io/spacex-react/)
 
