@@ -1,8 +1,10 @@
 import {Grid, IconButton, LinearProgress} from '@material-ui/core';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import {Alert, AlertTitle} from '@material-ui/lab';
 import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
-import {mergeMap, take, tap} from 'rxjs/operators';
+import {of} from 'rxjs';
+import {catchError, finalize, mergeMap, take, tap} from 'rxjs/operators';
 import {useLaunchService} from '../../services/launch-service';
 import {useRocketService} from '../../services/rocket-service';
 import {LaunchData} from '../../types/launch-data';
@@ -12,6 +14,7 @@ import RocketInfo from './RocketInfo';
 
 const LaunchDetails = ({launchId}: { launchId: string }) => {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const [launchData, setLaunchData] = useState<LaunchData | null>(null);
   const [rocketData, setRocketData] = useState<RocketData | null>(null);
   const launchService = useLaunchService();
@@ -20,34 +23,51 @@ const LaunchDetails = ({launchId}: { launchId: string }) => {
   const handleFavouriteLaunch = () => {
     const itemColor = launchService.favourite(launchId);
     updateLaunchColor(itemColor!);
-  }
+  };
 
   const handleRemoveFavouriteLaunch = () => {
     launchService.removeFavourite(launchId);
     updateLaunchColor();
-  }
+  };
 
   const updateLaunchColor = (color?: string) => {
     const updatedLaunchData = Object.assign({}, launchData);
     updatedLaunchData.iconColor = color;
 
     setLaunchData(updatedLaunchData);
-  }
+  };
 
   useEffect(() => {
     function getLaunchData() {
       setLoading(true);
+      setError(false);
+
       launchService.getLaunch(launchId)
         .pipe(
           tap(launch => setLaunchData(launch)),
           mergeMap(launch => rocketService.getRocket(launch.rocket)),
           tap(rocket => setRocketData(rocket)),
-          take(1)
-        ).subscribe(() => setLoading(false));
+          take(1),
+          catchError(() => {
+            setError(true);
+            return of({});
+          }),
+          finalize(() => setLoading(false))
+        ).subscribe();
     }
 
     getLaunchData();
   }, [launchId]);
+
+  let errorAlert;
+  if (error) {
+    errorAlert = (
+      <Alert severity="error">
+        <AlertTitle>Error</AlertTitle>
+        The requested launch cannot be fetched :(
+      </Alert>
+    );
+  }
 
   return (
     <>
@@ -55,6 +75,7 @@ const LaunchDetails = ({launchId}: { launchId: string }) => {
         <ArrowBackIosIcon/> Back to the list
       </IconButton>
       {loading && <LinearProgress/>}
+      {errorAlert}
       {launchData && rocketData &&
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
@@ -68,7 +89,7 @@ const LaunchDetails = ({launchId}: { launchId: string }) => {
       </Grid>
       }
     </>
-  )
-}
+  );
+};
 
 export default LaunchDetails;
