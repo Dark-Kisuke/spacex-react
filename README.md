@@ -50,3 +50,8 @@ The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+## Notes
+- The code style was not specified, so I used the `Function Components`
+- I used the RxJS to deal with events and communication with API
+- Added the base error handling e.g. when the data from API couldn't be fetched
