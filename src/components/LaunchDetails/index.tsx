@@ -3,8 +3,7 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import {Alert, AlertTitle} from '@material-ui/lab';
 import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
-import {of} from 'rxjs';
-import {catchError, finalize, mergeMap, take, tap} from 'rxjs/operators';
+import {finalize, mergeMap, tap} from 'rxjs/operators';
 import {useLaunchService} from '../../services/launch-service';
 import {useRocketService} from '../../services/rocket-service';
 import {LaunchData} from '../../types/launch-data';
@@ -38,25 +37,18 @@ const LaunchDetails = ({launchId}: { launchId: string }) => {
   };
 
   useEffect(() => {
-    function getLaunchData() {
-      setLoading(true);
-      setError(false);
+    setLoading(true);
+    setError(false);
 
-      launchService.getLaunch(launchId)
-        .pipe(
-          tap(launch => setLaunchData(launch)),
-          mergeMap(launch => rocketService.getRocket(launch.rocket)),
-          tap(rocket => setRocketData(rocket)),
-          take(1),
-          catchError(() => {
-            setError(true);
-            return of({});
-          }),
-          finalize(() => setLoading(false))
-        ).subscribe();
-    }
+    const sub = launchService.getLaunch(launchId)
+      .pipe(
+        tap(launch => setLaunchData(launch)),
+        mergeMap(launch => rocketService.getRocket(launch.rocket)),
+        tap(rocket => setRocketData(rocket)),
+        finalize(() => setLoading(false))
+      ).subscribe({error: () => setError(true)});
 
-    getLaunchData();
+    return () => sub.unsubscribe();
   }, [launchId]);
 
   let errorAlert;

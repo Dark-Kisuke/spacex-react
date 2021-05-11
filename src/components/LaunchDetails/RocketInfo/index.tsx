@@ -27,7 +27,7 @@ const RocketInfo = ({rocketData}: RocketInfoProps) => {
         </dl>
       </CardContent>
     </Card>
-  )
-}
+  );
+};
 
 export default RocketInfo;

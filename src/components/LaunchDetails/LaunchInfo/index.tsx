@@ -19,7 +19,7 @@ const useStyles = makeStyles(() =>
       width: 150,
       height: 150
     }
-  }),
+  })
 );
 
 const PatchImage = ({link}: { link?: string }) => {
@@ -39,8 +39,8 @@ const PatchImage = ({link}: { link?: string }) => {
         : <span>N/A</span>
       }
     </>
-  )
-}
+  );
+};
 
 const LaunchInfo = ({launchData, onFavouriteLaunch, onRemoveFavouriteLaunch}: LaunchInfoProps) => {
   return (
@@ -79,7 +79,7 @@ const LaunchInfo = ({launchData, onFavouriteLaunch, onRemoveFavouriteLaunch}: La
         <PatchImage link={launchData.patchImage}/>
       </CardContent>
     </Card>
-  )
-}
+  );
+};
 
 export default LaunchInfo;

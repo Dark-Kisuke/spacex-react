@@ -24,7 +24,6 @@ const rocketDataMock: RocketData = {
   mass: 56
 };
 
-
 const mockGetLaunch = jest.fn();
 const mockGetRocket = jest.fn();
 
@@ -43,7 +42,7 @@ jest.mock('../../../services/rocket-service', () => ({
 beforeEach(() => {
   mockGetLaunch.mockImplementation(() => of(launchDataMock));
   mockGetRocket.mockImplementation(() => of(rocketDataMock));
-})
+});
 
 it('mount without crashing', () => {
   mount(<BrowserRouter><LaunchDetails launchId={'1234'}/></BrowserRouter>);
@@ -54,6 +53,6 @@ it('shows error alert when launch data cannot be fetch ', () => {
 
   const component = mount(<BrowserRouter><LaunchDetails launchId={'1234'}/></BrowserRouter>);
 
-  expect(component.text()).toMatch('The requested launch cannot be fetched :(')
+  expect(component.text()).toMatch('The requested launch cannot be fetched :(');
 });
 

@@ -12,9 +12,10 @@ const launchDataMock: LaunchData = {
   launchDate: '2020-01-01',
   success: undefined,
   iconColor: '#ffffff'
-}
+};
 
-const emptyFunc = () => {};
+const emptyFunc = () => {
+};
 
 it('mount without crashing', () => {
   mount(<LaunchInfo launchData={launchDataMock} onRemoveFavouriteLaunch={emptyFunc} onFavouriteLaunch={emptyFunc}/>);
@@ -24,7 +25,8 @@ it('shows patch image when image is available', () => {
   const launchData = Object.assign({}, launchDataMock);
   launchData.patchImage = 'https://example.com/image.png';
 
-  const launchInfo = mount(<LaunchInfo launchData={launchData} onRemoveFavouriteLaunch={emptyFunc} onFavouriteLaunch={emptyFunc}/>);
+  const launchInfo = mount(<LaunchInfo launchData={launchData} onRemoveFavouriteLaunch={emptyFunc}
+                                       onFavouriteLaunch={emptyFunc}/>);
 
   expect(launchInfo.containsMatchingElement(<CardMedia image={launchData.patchImage}/>)).toEqual(true);
 });
@@ -33,7 +35,8 @@ it('shows patch not available when image is not provided', () => {
   const launchData = Object.assign({}, launchDataMock);
   launchData.patchImage = undefined;
 
-  const launchInfo = mount(<LaunchInfo launchData={launchData} onRemoveFavouriteLaunch={emptyFunc} onFavouriteLaunch={emptyFunc}/>);
+  const launchInfo = mount(<LaunchInfo launchData={launchData} onRemoveFavouriteLaunch={emptyFunc}
+                                       onFavouriteLaunch={emptyFunc}/>);
 
   expect(launchInfo.containsMatchingElement(<CardMedia/>)).toEqual(false);
 });
