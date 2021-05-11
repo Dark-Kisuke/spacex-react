@@ -9,7 +9,7 @@ const rocketDataMock: RocketData = {
   height: 123,
   diameter: 456,
   mass: 123454535
-}
+};
 
 it('mount without crashing', () => {
   mount(<RocketInfo rocketData={rocketDataMock}/>);

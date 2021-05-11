@@ -1,12 +1,13 @@
 # SpaceX launches overview
 An example app created with React that allows to browse SpaceX launches.
+SpaceX API: [Click~](https://github.com/r-spacex/SpaceX-API)
 
 Demo: [Click~](https://dark-kisuke.github.io/spacex-react/)
 
 ## Functionality
 * Browse launches list and allows to search the launch by its name (or some fragment)
 * Browse launch details
-* Possibility to mark the launch as a favourite (by clicking the star icon) and generating random color to it.
+* Possibility to mark the launch as a favourite (by clicking the star icon).
   The favourite flag is persisted in `localStorage`.
 
 ## Development
@@ -49,3 +50,8 @@ The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+## Notes
+- The code style was not specified, so I used the `Function Components`
+- I used the RxJS to deal with events and communication with API
+- Added the base error handling e.g. when the data from API couldn't be fetched

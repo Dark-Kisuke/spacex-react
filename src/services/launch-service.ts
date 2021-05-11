@@ -1,8 +1,7 @@
 import axios from 'axios';
-import randomColor from 'randomcolor';
 import {createContext, useContext} from 'react';
 import {from, Observable} from 'rxjs';
-import {map, take} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {LaunchData} from '../types/launch-data';
 
 export interface LaunchesList {
@@ -31,7 +30,7 @@ export class LaunchService {
           $regex: `${name}`,
           $options: 'i'
         }
-      }
+      };
     }
 
     return from(axios.post(`${this.api}/query`, body))
@@ -39,7 +38,7 @@ export class LaunchService {
         map(response => response.data),
         map(response => ({
             data: response.docs.map((value: any) => this.mapLaunch(value)),
-            total: response.totalDocs,
+            total: response.totalDocs
           })
         )
       );
@@ -52,55 +51,61 @@ export class LaunchService {
   public getLaunch(id: string) {
     return from(axios.get(`${this.api}/${id}`))
       .pipe(
-        take(1),
         map(response => this.mapLaunch(response.data))
-      )
+      );
   }
 
   /**
    * Favourites the launch by it's id and applying randomly the color to it.
    * @param id The launch id
-   * @return {string | null} The hex generated color if the launch is not marked as favourite
+   * @return If the launch has been favourited, returns true, otherwise  false.
    */
-  public favourite(id: string): string | null {
+  public favourite(id: string) {
     const allFavourites = this.getAllFavouriteLaunched();
-    if (!allFavourites[id]) {
-      allFavourites[id] = randomColor({luminosity: 'light'});
-      this.storeFavourites(allFavourites);
-
-      return allFavourites[id];
+    if (allFavourites.includes(id)) {
+      return false;
     }
 
-    return null;
+    allFavourites.push(id);
+    this.storeFavourites(allFavourites);
+
+    return true;
   }
 
   /**
-   * Returns the hex color of the launch (if the launch is favourited)
+   * Returns the flag whether the launch is favourited
    * @param id The launch id
    */
-  public getFavouriteColor(id: string) {
-    return this.getAllFavouriteLaunched()[id];
+  public isFavourited(id: string): boolean {
+    return this.getAllFavouriteLaunched().includes(id);
   }
 
   /**
    * Removes the favourite status of the launch
    * @param id The launch id
+   * @return If the favourite flag has been removed, returns true, otherwise false
    */
   public removeFavourite(id: string) {
     const allFavourites = this.getAllFavouriteLaunched();
-    delete allFavourites[id];
+    if (!allFavourites.includes(id)) {
+      return false;
+    }
 
-    this.storeFavourites(allFavourites);
+    this.storeFavourites(allFavourites.filter(value => value !== id));
   }
 
   private storeFavourites(favourites: any) {
     localStorage.setItem('favouriteLaunches', JSON.stringify(favourites));
   }
 
-  private getAllFavouriteLaunched(): any {
+  private getAllFavouriteLaunched(): string[] {
     const launches = localStorage.getItem('favouriteLaunches');
+    if (!launches) {
+      return [];
+    }
 
-    return launches ? JSON.parse(launches) : {};
+    const parsed = JSON.parse(launches);
+    return Array.isArray(parsed) ? parsed : [];
   }
 
   private mapLaunch(object: any): LaunchData {
@@ -112,8 +117,8 @@ export class LaunchService {
       success: object.success,
       patchImage: object.links?.patch?.small,
       rocket: object.rocket,
-      iconColor: this.getFavouriteColor(object.id)
-    }
+      favourited: this.isFavourited(object.id)
+    };
   }
 }
 
@@ -121,4 +126,4 @@ const LaunchServiceContext = createContext<LaunchService>(new LaunchService());
 
 export const useLaunchService = () => {
   return useContext(LaunchServiceContext);
-}
+};

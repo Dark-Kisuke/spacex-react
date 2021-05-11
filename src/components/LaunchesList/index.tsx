@@ -1,7 +1,8 @@
 import {createStyles, makeStyles} from '@material-ui/core';
+import {Alert, AlertTitle} from '@material-ui/lab';
 import React, {useEffect, useState} from 'react';
 import {BehaviorSubject} from 'rxjs';
-import {debounceTime, take} from 'rxjs/operators';
+import {debounceTime, finalize} from 'rxjs/operators';
 import {useLaunchService} from '../../services/launch-service';
 import {LaunchData} from '../../types/launch-data';
 import LaunchesListTable from './LaunchesListTable';
@@ -18,13 +19,15 @@ const useStyles = makeStyles(() =>
     searchField: {
       marginBottom: '2rem'
     }
-  }),
+  })
 );
 
 const LaunchesList = () => {
   const classes = useStyles();
+  const launchService = useLaunchService();
 
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [total, setTotal] = useState(0);
@@ -34,80 +37,90 @@ const LaunchesList = () => {
   const [data$] = useState(() => new BehaviorSubject([] as LaunchData[]));
   const [searchQuery$] = useState(() => new BehaviorSubject(''));
 
-  const launchService = useLaunchService();
-
   const handleChangePage = (newPage: number) => {
     setPage(newPage);
-  }
+  };
 
   const handleChangeRowsPerPage = (rows: number) => {
     setRowsPerPage(rows);
     setPage(0);
-  }
+  };
 
   const handleQueryInput = (value: string) => {
     searchQuery$.next(value);
-  }
+  };
 
   const handleFavouriteLaunch = (id: string) => {
-    const itemColor = launchService.favourite(id);
-    updateLaunchColor(id, itemColor!);
-  }
+    if (launchService.favourite(id)) {
+      updateLaunchFavouriteStatus(id, true);
+    }
+  };
 
   const handleRemoveFavouriteLaunch = (id: string) => {
     launchService.removeFavourite(id);
-    updateLaunchColor(id);
-  }
+    updateLaunchFavouriteStatus(id, false);
+  };
 
-  const updateLaunchColor = (id: string, color?: string) => {
+  const updateLaunchFavouriteStatus = (id: string, favourited: boolean) => {
     // Deep clone data
     const newData = data.map(x => Object.assign({}, x));
     const launchData = newData.find(launch => launch.id == id);
     if (launchData) {
-      launchData.iconColor = color;
+      launchData.favourited = favourited;
     }
 
     data$.next(newData);
-  }
+  };
 
   useEffect(() => {
-    const sub = data$.subscribe(setData)
-    return () => {
-      sub.unsubscribe();
-    }
+    const sub = data$.subscribe(setData);
+
+    return () => sub.unsubscribe();
   }, []);
 
   useEffect(() => {
-    function getLaunches() {
-      setLoading(true);
-      launchService.getLaunches(page + 1, rowsPerPage, query ? query : null)
-        .pipe(take(1))
-        .subscribe(response => {
+    setLoading(true);
+
+    const sub = launchService.getLaunches(page + 1, rowsPerPage, query ? query : null)
+      .pipe(finalize(() => setLoading(false)))
+      .subscribe({
+        next: (response) => {
           data$.next(response.data);
           setTotal(response.total);
-          setLoading(false);
-        });
-    }
+        },
+        error: () => setError(true)
+      });
 
-    getLaunches();
+    return () => sub.unsubscribe();
   }, [page, rowsPerPage, query]);
 
   useEffect(() => {
     const sub = searchQuery$
       .pipe(debounceTime(500))
-      .subscribe(setQuery);
+      .subscribe((value) => {
+        setQuery(value);
+        setPage(0);
+      });
 
-    return () => {
-      sub.unsubscribe();
-    }
-  })
+    return () => sub.unsubscribe();
+  }, []);
+
+  let errorAlert;
+  if (error) {
+    errorAlert = (
+      <Alert severity="error">
+        <AlertTitle>Error</AlertTitle>
+        The launches list cannot be fetched :(
+      </Alert>
+    );
+  }
 
   return (
     <div className={classes.root}>
       <div className={classes.searchField}>
         <SearchBar onChange={handleQueryInput}/>
       </div>
-
+      {errorAlert}
       <LaunchesListTable
         loading={loading}
         data={data}
@@ -120,7 +133,7 @@ const LaunchesList = () => {
         onRemoveFavouriteLaunch={handleRemoveFavouriteLaunch}
       />
     </div>
-  )
-}
+  );
+};
 
 export default LaunchesList;

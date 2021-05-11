@@ -83,8 +83,8 @@ const LaunchesListTable = (props: LaunchesListTableProps) => {
           {props.data.map((value, index) => (
             <TableRow hover key={'launch-' + index}>
               <TableCell>
-                {value.iconColor
-                  ? <StarIcon style={{color: value.iconColor}} onClick={() => props.onRemoveFavouriteLaunch(value.id)}/>
+                {value.favourited
+                  ? <StarIcon onClick={() => props.onRemoveFavouriteLaunch(value.id)}/>
                   : <StarBorderIcon onClick={() => props.onFavouriteLaunch(value.id)}/>
                 }
               </TableCell>

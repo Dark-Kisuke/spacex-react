@@ -3,7 +3,6 @@ import {lightBlue, red} from '@material-ui/core/colors';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import './index.css';
 import reportWebVitals from './reportWebVitals';
 
 const theme = createMuiTheme({

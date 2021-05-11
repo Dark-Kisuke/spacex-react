@@ -19,7 +19,7 @@ const useStyles = makeStyles(() =>
       width: 150,
       height: 150
     }
-  }),
+  })
 );
 
 const PatchImage = ({link}: { link?: string }) => {
@@ -39,8 +39,8 @@ const PatchImage = ({link}: { link?: string }) => {
         : <span>N/A</span>
       }
     </>
-  )
-}
+  );
+};
 
 const LaunchInfo = ({launchData, onFavouriteLaunch, onRemoveFavouriteLaunch}: LaunchInfoProps) => {
   return (
@@ -48,9 +48,8 @@ const LaunchInfo = ({launchData, onFavouriteLaunch, onRemoveFavouriteLaunch}: La
       <CardContent>
 
         <Typography gutterBottom variant="h5" component="h2">
-          {launchData.iconColor ?
-            <StarIcon style={{color: launchData.iconColor}}
-                      onClick={() => onRemoveFavouriteLaunch()}/> :
+          {launchData.favourited ?
+            <StarIcon onClick={() => onRemoveFavouriteLaunch()}/> :
             <StarBorderIcon onClick={() => onFavouriteLaunch()}/>
           } {launchData.name}
         </Typography>
@@ -79,7 +78,7 @@ const LaunchInfo = ({launchData, onFavouriteLaunch, onRemoveFavouriteLaunch}: La
         <PatchImage link={launchData.patchImage}/>
       </CardContent>
     </Card>
-  )
-}
+  );
+};
 
 export default LaunchInfo;
