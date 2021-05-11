@@ -51,21 +51,22 @@ const LaunchesList = () => {
   };
 
   const handleFavouriteLaunch = (id: string) => {
-    const itemColor = launchService.favourite(id);
-    updateLaunchColor(id, itemColor!);
+    if (launchService.favourite(id)) {
+      updateLaunchFavouriteStatus(id, true);
+    }
   };
 
   const handleRemoveFavouriteLaunch = (id: string) => {
     launchService.removeFavourite(id);
-    updateLaunchColor(id);
+    updateLaunchFavouriteStatus(id, false);
   };
 
-  const updateLaunchColor = (id: string, color?: string) => {
+  const updateLaunchFavouriteStatus = (id: string, favourited: boolean) => {
     // Deep clone data
     const newData = data.map(x => Object.assign({}, x));
     const launchData = newData.find(launch => launch.id == id);
     if (launchData) {
-      launchData.iconColor = color;
+      launchData.favourited = favourited;
     }
 
     data$.next(newData);

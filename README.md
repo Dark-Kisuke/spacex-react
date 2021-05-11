@@ -7,7 +7,7 @@ Demo: [Click~](https://dark-kisuke.github.io/spacex-react/)
 ## Functionality
 * Browse launches list and allows to search the launch by its name (or some fragment)
 * Browse launch details
-* Possibility to mark the launch as a favourite (by clicking the star icon) and generating random color to it.
+* Possibility to mark the launch as a favourite (by clicking the star icon).
   The favourite flag is persisted in `localStorage`.
 
 ## Development

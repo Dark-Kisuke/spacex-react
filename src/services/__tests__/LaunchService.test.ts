@@ -1,10 +1,8 @@
 import axios from 'axios';
-import randomColor from 'randomcolor';
 import {take} from 'rxjs/operators';
 import {LaunchService} from '../launch-service';
 
 jest.mock('axios');
-jest.mock('randomcolor');
 
 const mockStorage = () => {
   Storage.prototype.getItem = jest.fn();
@@ -31,7 +29,7 @@ describe('getLaunches', () => {
 
   it('maps data correctly', done => {
     // @ts-ignore
-    Storage.prototype.getItem.mockReturnValue(JSON.stringify({'1234': '#ffffff'}));
+    Storage.prototype.getItem.mockReturnValue(JSON.stringify(['1234']));
     // @ts-ignore
     axios.post.mockImplementationOnce(() => Promise.resolve({data: {docs: [mockData], totalDocs: 1}}));
 
@@ -46,7 +44,7 @@ describe('getLaunches', () => {
         expect(result.data[0].launchDate).toEqual('2020-01-01T12:00:00');
         expect(result.data[0].patchImage).toEqual('some image');
         expect(result.data[0].rocket).toEqual('rocket');
-        expect(result.data[0].iconColor).toEqual('#ffffff');
+        expect(result.data[0].favourited).toBeTruthy();
 
         done();
       });
@@ -95,7 +93,7 @@ describe('getLaunch', () => {
 
   it('maps data correctly', done => {
     // @ts-ignore
-    Storage.prototype.getItem.mockReturnValue(JSON.stringify({'1234': '#ffffff'}));
+    Storage.prototype.getItem.mockReturnValue(JSON.stringify(['1234']));
     // @ts-ignore
     axios.get.mockImplementationOnce(() => Promise.resolve({data: mockData}));
 
@@ -109,7 +107,7 @@ describe('getLaunch', () => {
         expect(result.launchDate).toEqual('2020-01-01T12:00:00');
         expect(result.patchImage).toEqual('some image');
         expect(result.rocket).toEqual('rocket');
-        expect(result.iconColor).toEqual('#ffffff');
+        expect(result.favourited).toBeTruthy();
 
         done();
       });
@@ -128,45 +126,35 @@ describe('getLaunch', () => {
 });
 
 describe('favourite', () => {
-  const testColor = '#deadff';
   beforeAll(() => mockStorage());
 
   it('favourites a new launch in a clean storage', () => {
     // @ts-ignore
     Storage.prototype.getItem.mockReturnValue(null);
-    // @ts-ignore
-    randomColor.mockImplementationOnce(() => testColor);
 
     const result = launchService.favourite('2137');
 
-    expect(result).toEqual(testColor);
-    expect(localStorage.setItem).toBeCalledWith('favouriteLaunches', JSON.stringify({'2137': testColor}));
+    expect(result).toBeTruthy();
+    expect(localStorage.setItem).toBeCalledWith('favouriteLaunches', JSON.stringify(['2137']));
   });
 
   it('favourites a new launch in a not clean storage', () => {
     // @ts-ignore
-    Storage.prototype.getItem.mockReturnValue(JSON.stringify({'1111': 'white'}));
-    // @ts-ignore
-    randomColor.mockImplementationOnce(() => testColor);
+    Storage.prototype.getItem.mockReturnValue(JSON.stringify(['1111']));
 
     const result = launchService.favourite('2137');
 
-    expect(result).toEqual(testColor);
-    expect(localStorage.setItem).toBeCalledWith('favouriteLaunches', JSON.stringify({
-      '2137': testColor,
-      '1111': 'white'
-    }));
+    expect(result).toBeTruthy();
+    expect(localStorage.setItem).toBeCalledWith('favouriteLaunches', JSON.stringify(['1111','2137']));
   });
 
   it('does nothing when a favourite already exist', () => {
     // @ts-ignore
-    Storage.prototype.getItem.mockReturnValue(JSON.stringify({'2137': 'white'}));
-    // @ts-ignore
-    randomColor.mockImplementationOnce(() => testColor);
+    Storage.prototype.getItem.mockReturnValue(JSON.stringify(['2137']));
 
     const result = launchService.favourite('2137');
 
-    expect(result).toBeNull();
+    expect(result).toBeFalsy();
     expect(localStorage.setItem).toBeCalledTimes(0);
   });
 });
@@ -174,10 +162,10 @@ describe('favourite', () => {
 describe('removeFavourite', () => {
   it('removes a favourite', () => {
     // @ts-ignore
-    Storage.prototype.getItem.mockReturnValue(JSON.stringify({'2137': 'white'}));
+    Storage.prototype.getItem.mockReturnValue(JSON.stringify(['2137']));
 
     launchService.removeFavourite('2137');
 
-    expect(localStorage.setItem).toBeCalledWith('favouriteLaunches', '{}');
+    expect(localStorage.setItem).toBeCalledWith('favouriteLaunches', '[]');
   });
 });

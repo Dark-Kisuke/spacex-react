@@ -4,7 +4,7 @@ export interface LaunchData {
   launchDate: string;
   rocket: string;
   upcoming: boolean;
+  favourited: boolean;
   success?: boolean;
-  iconColor?: string;
   patchImage?: string;
 }

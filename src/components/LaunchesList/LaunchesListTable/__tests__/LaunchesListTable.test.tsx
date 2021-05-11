@@ -15,7 +15,7 @@ const mockData: LaunchData[] = [
     launchDate: '2020-01-01T12:00:00',
     upcoming: false,
     success: true,
-    iconColor: '#ffffff',
+    favourited: true,
     patchImage: 'https://example.com/image.png'
   },
   {
@@ -23,7 +23,8 @@ const mockData: LaunchData[] = [
     name: 'Launch 2',
     rocket: 'rocket2',
     launchDate: '2020-01-02T12:00:00',
-    upcoming: true
+    upcoming: true,
+    favourited: false
   },
   {
     id: '3',
@@ -32,6 +33,7 @@ const mockData: LaunchData[] = [
     launchDate: '2020-01-03T12:00:00',
     upcoming: false,
     success: false,
+    favourited: false,
     patchImage: 'https://example.com/image.png'
   }
 ];

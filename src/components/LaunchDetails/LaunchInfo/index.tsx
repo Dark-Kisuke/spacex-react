@@ -48,9 +48,8 @@ const LaunchInfo = ({launchData, onFavouriteLaunch, onRemoveFavouriteLaunch}: La
       <CardContent>
 
         <Typography gutterBottom variant="h5" component="h2">
-          {launchData.iconColor ?
-            <StarIcon style={{color: launchData.iconColor}}
-                      onClick={() => onRemoveFavouriteLaunch()}/> :
+          {launchData.favourited ?
+            <StarIcon onClick={() => onRemoveFavouriteLaunch()}/> :
             <StarBorderIcon onClick={() => onFavouriteLaunch()}/>
           } {launchData.name}
         </Typography>

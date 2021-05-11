@@ -20,18 +20,20 @@ const LaunchDetails = ({launchId}: { launchId: string }) => {
   const rocketService = useRocketService();
 
   const handleFavouriteLaunch = () => {
-    const itemColor = launchService.favourite(launchId);
-    updateLaunchColor(itemColor!);
+    if (launchService.favourite(launchId)) {
+      updateFavouriteStatus(true);
+    }
   };
 
   const handleRemoveFavouriteLaunch = () => {
-    launchService.removeFavourite(launchId);
-    updateLaunchColor();
+    if (launchService.removeFavourite(launchId)) {
+      updateFavouriteStatus(false);
+    }
   };
 
-  const updateLaunchColor = (color?: string) => {
+  const updateFavouriteStatus = (favourited: boolean) => {
     const updatedLaunchData = Object.assign({}, launchData);
-    updatedLaunchData.iconColor = color;
+    updatedLaunchData.favourited = favourited;
 
     setLaunchData(updatedLaunchData);
   };

@@ -1,5 +1,4 @@
-import {fireEvent} from '@testing-library/react';
-import {mount, render, shallow} from 'enzyme';
+import {mount, shallow} from 'enzyme';
 import React from 'react';
 import {BrowserRouter} from 'react-router-dom';
 import {of, throwError} from 'rxjs';
@@ -14,7 +13,7 @@ const launchDataMock: LaunchData[] = [
     upcoming: true,
     launchDate: '2020-01-01',
     success: undefined,
-    iconColor: '#ffffff'
+    favourited: true
   },
   {
     id: '1235',
@@ -22,7 +21,8 @@ const launchDataMock: LaunchData[] = [
     rocket: 'Rocket 2',
     upcoming: false,
     launchDate: '2020-01-02',
-    success: true
+    success: true,
+    favourited: false
   }
 ];
 

@@ -13,7 +13,7 @@ const launchDataMock: LaunchData = {
   upcoming: true,
   launchDate: '2020-01-01',
   success: undefined,
-  iconColor: '#ffffff'
+  favourited: true
 };
 
 const rocketDataMock: RocketData = {
